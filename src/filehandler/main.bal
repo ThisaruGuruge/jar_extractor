@@ -7,10 +7,9 @@ public function main() {
         io:print("'\tValue: ");
         var jarFile = getJarFileHandler(fileName);
         io:println(jarFile);
-    }
-
-    var result = createFile("c:\\test\\sample\\another\\level\\sample.txt");
-    if (result is error) {
-        io:println(result);
+        if (jarFile is handle) {
+            var files = getFileArray(jarFile);
+            var classFiles = writeClassFiles(jarFile, files);
+        }
     }
 }

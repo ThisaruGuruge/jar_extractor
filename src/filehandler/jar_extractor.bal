@@ -26,17 +26,33 @@ public function getJarFileHandler(string fileName) returns handle|Error {
     }
 }
 
+# Returns a handle object to a Java array of files inside the jar file.
+#
+# + jarFile - handle object for java file
+# + returns - handle to Java array
+public function getFileArray(handle jarFile) returns handle {
+    var entries = getEntriesOfJar(jarFile);
+    var entriesList = toList(entries);
+    return getArray(entriesList);
+}
+
+# Creates a file for the provided name, and writes the content.
+#
+# + fileName - Name of the file
+# + content - Content to write to the file
+# + returns - `Error` if the process failed, nil otherwise
 public function createFile(string fileName, byte[] content) returns @tainted Error? {
     var file = io:openWritableFile(fileName);
     if (file is error) {
         return createError("File creation failed", file);
-    }
-    var writeResult = file.write(content);
-    if (writeResult is error) {
-        return createError("Failed to write to the file", writeResult);
-    }
-    var closeResult = file.close();
-    if (closeResult is error) {
-        return createResult("Failed to close the file", closeResult);
+    } else {
+        var writeResult = file.write(content, 0);
+        if (writeResult is error) {
+            return createError("Failed to write to the file", writeResult);
+        }
+        var closeResult = file.close();
+        if (closeResult is error) {
+            return createError("Failed to close the file", closeResult);
+        }
     }
 }
