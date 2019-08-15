@@ -1,11 +1,6 @@
 import ballerina/filepath;
 import ballerinax/java;
 
-function isFile(handle fileReceiver) returns boolean = @java:Method {
-    name: "isFile",
-    class: "java.io.File"
-} external;
-
 function getFileHandle(string path) returns handle = @java:Constructor {
     class: "java.io.File",
     paramTypes: ["java.lang.String"]
